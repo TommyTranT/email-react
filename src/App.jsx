@@ -1,19 +1,38 @@
-import "./App.css";
+import React, { useRef } from "react";
+import emailjs from "@emailjs/browser";
 
 function App() {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "react_example",
+        "react_example",
+        form.current,
+        "8L3sGNgJwdMEK2tET"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
   return (
-    <div className="App">
-      <form>
-        <input />
-        Name <br />
-        <input />
-        Email <br />
-        <input />
-        Message
-        <br />
-        <button>Submit</button>
-      </form>
-    </div>
+    <form ref={form} onSubmit={sendEmail}>
+      <label>Name</label>
+      <input type="text" name="user_name" />
+      <label>Email</label>
+      <input type="email" name="user_email" />
+      <label>Message</label>
+      <textarea name="message" />
+      <input type="submit" value="Send" />
+    </form>
   );
 }
 
